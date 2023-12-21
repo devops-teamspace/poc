@@ -1,0 +1,10 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+
+repos:
+  - repo: https://github.com/python-openapi/openapi-spec-validator
+    rev: 0.7.1 # The version to use or 'master' for latest
+    hooks:
+      - id: openapi-spec-validator
+        exclude: ^(.github/|one-schema/openapi-doc/game-server/documents/common/|one-cms/|one-unity/core/development/frontend|one-mobile/flutter_project/)

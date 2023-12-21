@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "RecordStateType",
+  "type": "string",
+  "description": "",
+  "x-enumNames": [
+    "Watch",
+    "Preset",
+    "Standby",
+    "Recording",
+    "Preview",
+    "Done",
+    "Upload"
+  ],
+  "enum": [
+    "WATCH",
+    "PRESET",
+    "STANDBY",
+    "RECORDING",
+    "PREVIEW",
+    "DONE",
+    "UPLOAD"
+  ]
+}

@@ -1,0 +1,48 @@
+name: OpenAPI json/yaml validation
+on:
+  workflow_dispatch:
+    inputs:
+      POC_ENV:
+        description: 'The target build environment'
+        required: true
+        type: choice
+        default: openapi-spec-validator
+        options:
+          - schemathesis
+          - openapi-spec-validator
+  workflow_call:
+    inputs:
+      TARGET_BRANCH:
+        description: "The target branch"
+        default: ""
+        type: string
+
+jobs:
+  schemathesis-Testting:
+    if: github.event.inputs.POC_ENV == 'schemathesis'
+    name: OpenAPI with schemathests validation
+    environment: building_variables
+    runs-on: [poc]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.TARGET_BRANCH || '' }}
+    - name: still survey ......
+      run: |
+        echo "still survey ......"
+#   - uses: schemathesis/action@v1
+#     with:
+#       schema: "./one-schema/json_schema/ErrorCode.schema"
+#       base-url: 'http://json-schema.org/draft-04/schema#'
+  openapi-spec-validator:
+    if: github.event.inputs.POC_ENV == 'openapi-spec-validator'
+    name: openapi validator
+    environment: building_variables
+    runs-on: [poc]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.TARGET_BRANCH || '' }}
+    - name: pre-commit openapi-spec-validator
+      run: |
+        pre-commit run --all-files
