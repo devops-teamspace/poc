@@ -42,6 +42,6 @@ jobs:
         run: |
           pushd one-monitor || exit 1
           helm package github-exporter-poc/
-          echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > ecr_tag.txt
+          echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > ~/ecr_tag.txt
           helm push github-exporter-4.1.0.tgz oci://511635964514.dkr.ecr.ap-southeast-1.amazonaws.com/
           popd
