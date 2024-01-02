@@ -15,7 +15,7 @@ env:
 jobs:
   package_helm_chart:
     name: Package github-exporter OCI
-    runs-on: ["self-hosted", "g4dn-xlarge"]
+    runs-on: ["self-hosted"]
 
     steps:
       - uses: actions/checkout@v3
