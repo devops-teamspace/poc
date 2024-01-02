@@ -39,13 +39,11 @@ variable "edge_server_variant_name" {
 }
 
 variable "instance_type" {
-  type    = string
-  default = "ml.g4dn.xlarge"
+  type = string
 }
 
 variable "sns_backend_subscribe_path" {
-  type    = string
-  default = "https://backend.dev.xrspace.io/api/v1/aigc/sns_endpoint/motion"
+  type = string
 }
 
 variable "kms_state_backend_bucket_name" {
@@ -54,4 +52,36 @@ variable "kms_state_backend_bucket_name" {
 
 variable "kms_state_backend_key" {
   type = string
+}
+
+variable "env" {
+  type = string
+}
+
+variable "edge_server_initial_instance_count" {
+  type = number
+}
+
+variable "edge_server_initial_variant_weight" {
+  type = number
+}
+
+variable "edge_server_min_instance_count" {
+  type = number
+}
+
+variable "edge_server_max_instance_count" {
+  type = number
+}
+
+variable "edge_server_autoscale_target_value" {
+  type = number
+}
+
+variable "edge_server_autoscale_scale_in_cooldown" {
+  type = number
+}
+
+variable "edge_server_autoscale_scale_out_cooldown" {
+  type = number
 }

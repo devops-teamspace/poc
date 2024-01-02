@@ -1,3 +1,10 @@
+locals {
+  model_name               = format("edge-server-%s-%s", var.env, var.edge_server_image_tag)
+  model_name_normalization = replace(local.model_name, ".", "-")
+  variant_name             = format("%s-%s", var.edge_server_variant_name, var.env)
+  endpoint_name            = format("%s-%s", var.edge_server_endpoint_name, var.env)
+}
+
 resource "aws_s3_bucket" "training_data" {
   bucket = "studio-training-data"
 
@@ -18,7 +25,7 @@ resource "aws_s3_bucket_cors_configuration" "training_data_cors_config" {
 }
 
 resource "aws_sns_topic" "edge_server_sns" {
-  name = "edge-server-result"
+  name = "edge-server-result-${var.env}"
 }
 
 resource "aws_sns_topic_subscription" "edge_server_sns_subscribe" {
@@ -206,8 +213,8 @@ resource "aws_iam_role_policy_attachment" "sagemaker" {
   policy_arn = aws_iam_policy.sagemaker_policy.arn
 }
 
-resource "aws_sagemaker_model" "model" {
-  name                     = format("%s-edge-server-%s", data.terraform_remote_state.network.outputs.eks_cluster_name, var.edge_server_image_tag)
+resource "aws_sagemaker_model" "edge_server_model" {
+  name                     = local.model_name_normalization
   execution_role_arn       = aws_iam_role.sagemaker_role.arn
   enable_network_isolation = false
 
@@ -224,20 +231,20 @@ resource "aws_sagemaker_model" "model" {
   }
 }
 
-resource "aws_sagemaker_endpoint_configuration" "endpoint_config" {
-  name = format("%s-edge-server-endpoint-config", data.terraform_remote_state.network.outputs.eks_cluster_name)
+resource "aws_sagemaker_endpoint_configuration" "edge_server_endpoint_config" {
+  name = format("edge-server-endpoint-config-%s", var.env)
 
   production_variants {
-    variant_name           = var.edge_server_variant_name
-    model_name             = aws_sagemaker_model.model.name
-    initial_instance_count = 1
+    variant_name           = local.variant_name
+    model_name             = aws_sagemaker_model.edge_server_model.name
+    initial_instance_count = var.edge_server_initial_instance_count
     instance_type          = var.instance_type
-    initial_variant_weight = 1
+    initial_variant_weight = var.edge_server_initial_variant_weight
   }
   async_inference_config {
     output_config {
-      s3_output_path  = "s3://${data.terraform_remote_state.storage.outputs.s3_backend_bucket_name}/edge-server/output"
-      s3_failure_path = "s3://${data.terraform_remote_state.storage.outputs.s3_backend_bucket_name}/edge-server/output"
+      s3_output_path  = "s3://${data.terraform_remote_state.storage.outputs.s3_backend_bucket_name}/${var.env}/edge-server/output"
+      s3_failure_path = "s3://${data.terraform_remote_state.storage.outputs.s3_backend_bucket_name}/${var.env}/edge-server/output"
       notification_config {
         error_topic   = aws_sns_topic.edge_server_sns.id
         success_topic = aws_sns_topic.edge_server_sns.id
@@ -245,30 +252,30 @@ resource "aws_sagemaker_endpoint_configuration" "endpoint_config" {
       kms_key_id = data.terraform_remote_state.kms.outputs.sagemaker_kms_arn
     }
   }
-  depends_on = [aws_sagemaker_model.model]
+  depends_on = [aws_sagemaker_model.edge_server_model]
 }
 
-resource "aws_sagemaker_endpoint" "endpoint" {
-  name                 = var.edge_server_endpoint_name
-  endpoint_config_name = aws_sagemaker_endpoint_configuration.endpoint_config.name
-  depends_on           = [aws_sagemaker_endpoint_configuration.endpoint_config]
+resource "aws_sagemaker_endpoint" "edge_server_endpoint" {
+  name                 = local.endpoint_name
+  endpoint_config_name = aws_sagemaker_endpoint_configuration.edge_server_endpoint_config.name
+  depends_on           = [aws_sagemaker_endpoint_configuration.edge_server_endpoint_config]
 }
 
-resource "aws_appautoscaling_target" "sagemaker_target" {
-  max_capacity       = 10
-  min_capacity       = 1
-  resource_id        = format("endpoint/%s/variant/%s", var.edge_server_endpoint_name, var.edge_server_variant_name)
+resource "aws_appautoscaling_target" "edge_server_sagemaker_target" {
+  max_capacity       = var.edge_server_max_instance_count
+  min_capacity       = var.edge_server_min_instance_count
+  resource_id        = format("endpoint/%s/variant/%s", local.endpoint_name, local.variant_name)
   scalable_dimension = "sagemaker:variant:DesiredInstanceCount"
   service_namespace  = "sagemaker"
-  depends_on         = [aws_sagemaker_endpoint_configuration.endpoint_config, aws_sagemaker_endpoint.endpoint]
+  depends_on         = [aws_sagemaker_endpoint_configuration.edge_server_endpoint_config, aws_sagemaker_endpoint.edge_server_endpoint]
 }
 
-resource "aws_appautoscaling_policy" "autoscale_policy_sagemaker" {
+resource "aws_appautoscaling_policy" "edge_server_autoscale_policy_sagemaker" {
   name               = "SageMakerEndpointInvocationScalingPolicy"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.sagemaker_target.resource_id
-  scalable_dimension = aws_appautoscaling_target.sagemaker_target.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.sagemaker_target.service_namespace
+  resource_id        = aws_appautoscaling_target.edge_server_sagemaker_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.edge_server_sagemaker_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.edge_server_sagemaker_target.service_namespace
 
   target_tracking_scaling_policy_configuration {
     customized_metric_specification {
@@ -277,14 +284,14 @@ resource "aws_appautoscaling_policy" "autoscale_policy_sagemaker" {
 
       dimensions {
         name  = "EndpointName"
-        value = var.edge_server_endpoint_name
+        value = local.endpoint_name
       }
 
       statistic = "Maximum"
     }
-    target_value       = 2
-    scale_in_cooldown  = 180
-    scale_out_cooldown = 60
+    target_value       = var.edge_server_autoscale_target_value
+    scale_in_cooldown  = var.edge_server_autoscale_scale_in_cooldown
+    scale_out_cooldown = var.edge_server_autoscale_scale_out_cooldown
   }
-  depends_on = [aws_appautoscaling_target.sagemaker_target, aws_sagemaker_endpoint_configuration.endpoint_config]
+  depends_on = [aws_appautoscaling_target.edge_server_sagemaker_target, aws_sagemaker_endpoint_configuration.edge_server_endpoint_config]
 }

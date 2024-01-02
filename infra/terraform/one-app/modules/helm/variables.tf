@@ -1,11 +1,3 @@
-variable "aws_oidc_url" {
-  type = string
-}
-
-variable "aws_oidc_arn" {
-  type = string
-}
-
 variable "eks_cluster_name" {
   type = string
 }

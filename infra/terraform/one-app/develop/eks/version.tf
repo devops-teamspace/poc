@@ -7,7 +7,7 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "xrspace-terraform-backend"
+    bucket = "xrworld-tfstate"
     key    = "one-app/develop/eks/terraform.tfstate"
     region = "ap-southeast-1"
   }

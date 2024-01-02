@@ -1,0 +1,347 @@
+---
+# -- Override the name
+nameOverride: ""
+
+# -- Override the fullname
+fullnameOverride: ""
+
+# -- Replicas for the deployment
+replicaCount: 1
+
+image:
+  # -- Image repository used by deployment
+  repository: quay.io/promhippie/github-exporter
+
+  # -- Optional tag for the repository, defaults to app version
+  tag: ""
+
+  # -- Image pull policy
+  pullPolicy: IfNotPresent
+
+  # -- Optional name of pull secret if using a private registry
+  pullSecrets: []
+
+serviceAccount:
+  # -- Create a new service account
+  create: true
+
+  # -- Optional name for an existing service account
+  name: ""
+
+# -- Define additional labels
+labels: {}
+
+# -- Define additional annotations
+annotations: {}
+
+# -- Security context for the deployment
+securityContext:
+  fsGroup: 10000
+
+# -- Security context for the pod
+podSecurityContext:
+  runAsGroup: 10000
+  runAsUser: 10000
+  runAsNonRoot: true
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["all"]
+
+service:
+  # -- Type of the service
+  type: ClusterIP
+
+  # -- Port of the service
+  port: 9504
+
+  # -- Internal port of the service
+  internalPort: 9504
+
+  # -- Additional annotations for the service
+  annotations: {}
+    # prometheus.io/path: /metrics
+    # prometheus.io/port: "9504"
+    # prometheus.io/scrape: "true"
+
+  # -- Additional labels for the service
+  labels: {}
+
+ingress:
+  # -- Enable ingress
+  enabled: true
+
+  # -- (string) Class name for the ingress resource
+  className: alb
+
+  # -- Host definition for ingress
+  hosts:
+    - host: github-exporter.dev.xrspace.io
+      paths:
+        - path: /
+          pathType: Prefix
+
+  # -- Optional TLS configuration for ingress
+  tls: []
+
+  # -- Additional annotations for the ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-path: /metrics
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:511635964514:certificate/32d5c63f-c780-4d28-b29e-716af5abb043
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-1-2017-01
+    alb.ingress.kubernetes.io/group.name: "xrworldgroup"
+#   alb.ingress.kubernetes.io/certificate-arn: {{ .Values.release.certificateARN }}
+
+  # -- Additional labels for the ingress
+  labels: {}
+
+persistence:
+  # -- Enable persistence for the exporter
+  enabled: false
+
+  # -- Size for the exporter volume
+  size: 1G
+
+  # -- Storage class used for the exporter volume
+  storageClass:
+
+  # -- Access modes used for the exporter volume
+  accessModes:
+    - ReadWriteOnce
+
+  # -- Name of an already existing claim
+  existingClaim:
+
+  # -- Path to mount the exporter volume
+  mountPath: /var/lib/exporter
+
+# -- Resources for the deployment
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# -- Node selector for the deployment
+nodeSelector: {}
+
+# -- Affinity for the deployment
+affinity: {}
+
+# -- Tolerations for the deployment
+tolerations: []
+
+serviceMonitor:
+  # -- Enable service monitor integration
+  enabled: false
+
+  # -- Namespace used by service monitor
+  namespace: ""
+
+  # -- Additional labels for the service monitor
+  labels: {}
+
+  # -- Scrape interval
+  interval: 30s
+
+  # -- Scrape path
+  telemetryPath: /metrics
+
+  # -- Scrape timeout
+  timeout: 30s
+
+  # -- Metric relabeling configuration
+  metricRelabelings: []
+
+  # -- Relabeling configuration
+  relabelings: []
+
+  # -- Target labels
+  targetLabels: []
+
+  # -- Optionally override the job label
+  jobLabel: []
+
+prometheusRule:
+  # -- Enable custom prometheus rules
+  enabled: false
+
+  # -- Namespace used by prometheus rules
+  namespace: ""
+
+  # -- Additional labels for prometheus rules
+  additionalLabels: {}
+
+  # -- Rules definition
+  rules: []
+
+# -- environment variables from existing secret
+envFromSecret: ""
+
+# -- Environment variables from existing configmap
+envFromConfigMap: ""
+
+# -- Extra environment variables from mapping
+extraEnvVariables: {}
+# GITHUB_EXPORTER_WORKFLOWS_LABELS: workflow,event,name,status,branch,number,run
+
+# GITHUB_EXPORTER_TOKEN: "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"
+# GITHUB_EXPORTER_LOG_PRETTY: true
+# GITHUB_EXPORTER_ORG: XRSPACE-Inc
+# GITHUB_EXPORTER_REPO: jamesxrspace/POC
+  # GITHUB_EXPORTER_WEB_CONFIG: /etc/github-exporter-files/web_config.yaml
+
+# -- Extra environment variables from secrets
+extraEnvSecrets: {}
+
+# -- List of extra init containers
+extraInitContainers: []
+
+# -- List of extra volumes
+extraVolumes: []
+
+# -- List of extra volume mounts
+extraVolumeMounts: []
+
+# -- List of files written to a configmap and mounted to /etc/github-exporter-files
+files: {}
+  # web_config.yaml: |
+  #   basic_auth_users:
+  #     example: $2y$05$a.7HgF3w3/V7kXRx9XNK9.klJbvALBvtACWdFTQ6VsC/diXVqToMW
+
+config:
+  # -- Authentication mode, could be `token` or `app`
+  authType: token
+
+  # -- (string) Access token for GitHub
+  token: "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"
+
+  # -- Key used within secret for token
+  tokenKey: token
+
+  # -- (number) App ID used for GitHub app
+  appId: 726810
+
+  # -- Key used within secret for appId
+  appIdKey: appId
+
+  # -- (number) Installation ID used for GitHub app
+  installationId: 45330766
+
+  # -- Key used within secret for installationId
+  installationIdKey: installationId
+
+  # -- (string) Private key in base64 encoded format
+  privateKey: |-
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEAxyyH/vndHSXl6xFyebVPvJ8zir4NfLUuJkZhgHqILJuACJOg
+    j0Es4yrQviNnpouo659dQiJUP3e9Bacjz1pJe3iYSEH6u+pZff6ipd1l09wtpJCK
+    GcG85d9lHsiZCxGYEE7+cHdQm0NakaknSTMvRwmArMnv6d8TL510fKNxs24BShJ1
+    CRVfBI4DA5Lo1MjRWKpVssVRa4idEYPdOXZ3z/77NnTxzv3DxYKg4UFIMlVd7fuz
+    pekbN65CDKCGkDWtAhukRk5zukRcjzeEXP/8dCa9pPVwui0ORiVLwn9Dty/uMWQZ
+    FStwvmrMMJdnUGx7pfuxwnI5U0nJz+yVA5QKHQIDAQABAoIBABYVB9brGOq8YutW
+    +dwoj/iXpf1B6PjklYNE1laKP0LC0sUgqPJ5BWMCQjZycnFyln3ZI1vLto961Qgl
+    acD5f6Ai1K9eMVBYQSfI7Xt6OmnsxVqzc7w7UJgj1nA9SUqC3tsgBvGtKNCt/QKd
+    QG/LLvivQwblNKY3R0dGK74N2PNNkovAYIapgPaWHV4txGDVYKPkGpi2EJSegHHv
+    y8ZOo2n2AWvhSptFCkhPZjYaxDqxQhcRnc7NWRPx7Ub+bOJY6dST/qCPS3bVSK0z
+    Na0eG6dIAwIGkV5bkhcBFfPuZ1/cZ1BACs9AxjJ6c/h80nFQBuL0qMYxMMgfKeWU
+    8NxyWEECgYEA/WQKna6aXgG7OATdTSXps9auuUh78IgHJM/Ue5ZyiDC95Au3LmjR
+    92+soYuTlwnJBDI3NaYWN/ev/Jul4PYYdVo3KxuhL/NEFchvFRWsNO0MiFoJVgXE
+    JLI3gZVs9+MXlsWqec5DPVMkj+XYnbY52K0syZ6ZOJ/VMeVbCO1CJhUCgYEAyTmR
+    32uaO7SRr0qzi4aA6/8aUQ8m4B/tPnWuDX9qeQIRIB68sGyYiq9Ed+sHvBl8m/WP
+    MIsXvITfb1XuUdy1+sq1XC+ctGBOlJ+bupgojp0HYj+FmUxMtegX5OrATJgjFM7k
+    bXuhMPql6VJB0emYc6e4A9+Rcj6gR/uFaV6THekCgYEAzwhtcBaYRBTwDj5TPtSq
+    VWkkS3kA4y+Rfq9csjnjjIkerfQwkHfOjngtObTcOz0ghBAvceMpJkN3BFN8Pgl1
+    RHUYvF0P3yjJSW8B691QXdINOl8uX53IfB8tIPChHwzqWiNZPbqcz79eEUDAM2QP
+    cY1VGcs+77gQLntyXSHVuV0CgYBdg+S3+TDHWIZv+X5xdEPL6VVYoHsHo67E3TnT
+    Sgi4Te6Zh89XClDl+sgOFusUTp/rdvZhr/KLCRExk7Ta1IC6GaSpP/NKnItIZNih
+    of8PMAjzbuPut1fbHg6kszhFIFsFW5UrEE58DbA3O6QdIrtX3HUXT7ovZs1kRo7c
+    xjgGqQKBgGh5l1pUsnDYySORig79pqAgHKTSp4vvgnbwcWJcVk1iDAl/o8q9WF0e
+    9sQMEd2bwObeZSMMyQI57m8jiKf5uE9pntD8/+JZOsgLog5m0aF0yROeKkzF/O/d
+    TBESfN3qdh2I3jST4QVZpRGw0jqFU1/RdvQdgOLwWGvx4gSGmf1J
+    -----END RSA PRIVATE KEY-----
+
+  # -- Key used within secret for privateKey
+  privateKeyKey: privateKey
+
+  # -- (string) Existing secret to use for credentials
+  existingSecret: ~
+# existingSecret: github-exporter
+
+webhook:
+  # -- Enable webhook secret integration
+  enabled: true
+
+  # -- (string) Secret for webhook authentication
+  secret: NPh2x7CwvB2ZW_C
+
+  # -- Key used within secret for webhook
+  secretKey: secret
+
+  # -- (string) Existing secret to use for credentials
+  existingSecret: ~
+# existingSecret: github-exporter-webhook
+
+  # -- (string) Path for webhook endpoint
+  path: /github
+
+database:
+  # -- Enable database secret integration
+  enabled: false
+
+  # -- (string) DSN for used database and credentials
+  dsn: sqlite:///var/lib/exporter/database.sqlite3
+
+  # -- Key used within secret for webhook
+  dsnKey: dsn
+
+  # -- (string) Existing secret to use for credentials
+  existingSecret: ~
+
+exporter:
+  # -- (string) Enterprises to scrape metrics from
+  enterprises: ~
+
+  # -- (string) Organizations to scrape metrics from
+  orgs: "devops-teamspace"
+
+  # -- (string) Repositories to scrape metrics from
+  repos: ~
+# repos: [ "devops-teamspace/poc","devops-teamspace/starter-workflows" ] 
+
+collector:
+  # -- Enable collector for admin
+  admin: false
+
+  # -- Enable collector for orgs
+  orgs: true
+
+  # -- Enable collector for repos
+  repos: true
+
+  # -- Enable collector for billing
+  billing: true
+
+  # -- Enable collector for runners
+  runners: true
+
+  # -- Enable collector for workflows
+  workflows: true
+
+workflow:
+  # -- List of labels assigned for workflow metrics
+  labels: []
+
+  # -- (string) Duration to keep workflow metrics
+  window: 24h
+
+...

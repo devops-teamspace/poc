@@ -8,7 +8,6 @@ terraform {
   }
   backend "s3" {
     bucket = "xrspace-terraform-backend"
-    key    = "studio/terraform.tfstate"
     region = "ap-southeast-1"
   }
 }

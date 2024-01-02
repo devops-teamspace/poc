@@ -22,6 +22,8 @@ jobs:
     if: github.event.inputs.POC_ENV == 'schemathesis'
     name: OpenAPI with schemathests validation
     environment: building_variables
+    runs-on:
+      group: Default
     steps:
     - uses: actions/checkout@v3
       with:
@@ -37,6 +39,8 @@ jobs:
     if: github.event.inputs.POC_ENV == 'openapi-spec-validator'
     name: openapi validator
     environment: building_variables
+    runs-on: 
+      group: Default
     steps:
     - uses: actions/checkout@v3
       with:
