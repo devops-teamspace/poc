@@ -9,7 +9,7 @@ on:
         default: ""
         type: string
 
-  ECR_REPOSITORY: github-exporter
+  ECR_REPOSITORY: tp-five/one-monitor/github-exporter-poc
 
 jobs:
   package_helm_chart:
