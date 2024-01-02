@@ -10,7 +10,7 @@ on:
         type: string
 
 env:
-  ECR_REPOSITORY: tp-five/one-monitor/github-exporter-poc
+  ECR_REPOSITORY: github-exporter
 
 jobs:
   package_helm_chart:
