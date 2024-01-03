@@ -13,7 +13,7 @@ spec:
         - destination:
             host: {{ .Release.Name }}-svc
             port:
-              number: {{ .Values.service.port | trimPrefix ":"  }}
+              number: {{ .Values.service.port }}
       corsPolicy:
         allowCredentials: true
         allowHeaders:
