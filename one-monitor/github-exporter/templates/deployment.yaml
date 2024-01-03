@@ -168,16 +168,16 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.internalPort }}
+              containerPort: {{ .Values.configmap.app.port | trimPrefix ":" }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: {{ .Values.configmap.app.port | trimPrefix ":" }}
           readinessProbe:
             httpGet:
               path: /readyz
-              port: http
+              port: {{ .Values.configmap.app.port | trimPrefix ":" }}
           {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

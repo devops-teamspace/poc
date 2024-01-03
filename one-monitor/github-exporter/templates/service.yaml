@@ -15,8 +15,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: http
-      port: {{ .Values.service.port }}
-      targetPort: http
+      port: {{ .Values.configmap.app.port | trimPrefix ":" }}
+      targetPort: {{ .Values.configmap.app.port | trimPrefix ":" }}
       protocol: TCP
   selector:
     {{- include "github-exporter.selectorLabels" . | nindent 4 }}
