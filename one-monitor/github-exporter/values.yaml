@@ -76,7 +76,6 @@ ingress:
 
   # -- Host definition for ingress
   hosts:
-    - cmsHost: https://cms.dev.xrspace.io
     - host: github-exporter.dev.xrspace.io
       paths:
         - path: /
