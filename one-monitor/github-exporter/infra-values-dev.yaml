@@ -43,8 +43,5 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-nodeSelector:
-  Service: application
-
 host: github-exporter.dev.xrspace.io
 cmsHost: https://cms.dev.xrspace.io
