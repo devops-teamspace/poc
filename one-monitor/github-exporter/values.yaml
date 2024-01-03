@@ -69,7 +69,7 @@ service:
 
 ingress:
   # -- Enable ingress
-  enabled: true
+  enabled: false
 
   # -- (string) Class name for the ingress resource
   className: alb
