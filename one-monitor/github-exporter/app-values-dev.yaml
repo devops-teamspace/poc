@@ -1,6 +1,6 @@
 configmap:
     app:
-        port: :8090
+        port: :9504
         app_ids:
             - azp: 64ed513ceec70e190e695c60
               app_id: TP-FIVE
