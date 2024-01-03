@@ -41,7 +41,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.ecr_image_tag.outputs.ecr_registry }}
         run: |
           pushd one-monitor || exit 1
-          helm package github-exporter-poc/
+          helm package github-exporter/
           echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > ecr_tag.txt
           helm push github-exporter-4.1.0.tgz oci://"$ECR_REGISTRY"
           popd
