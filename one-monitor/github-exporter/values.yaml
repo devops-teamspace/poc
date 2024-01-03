@@ -26,7 +26,7 @@ serviceAccount:
   create: true
 
   # -- Optional name for an existing service account
-  name: ""
+  name: "github-exporter"
 
 # -- Define additional labels
 labels: {}
