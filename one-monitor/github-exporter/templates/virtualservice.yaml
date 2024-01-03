@@ -3,8 +3,6 @@ kind: VirtualService
 metadata:
   name: {{ .Release.Name }}-vs
   namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "backend.labels" . | nindent 4 }}
 spec:
   gateways:
     - {{ .Release.Name }}-gw
