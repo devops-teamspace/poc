@@ -7,14 +7,7 @@ replicaCount: 1
 serviceAccount:
   name: github-exporter
 
-podSecurityContext:
-  fsGroup: 1024
-
 securityContext:
-  capabilities:
-    drop:
-    - ALL
-  readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 1024
 
