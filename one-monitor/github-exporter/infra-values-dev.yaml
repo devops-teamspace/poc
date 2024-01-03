@@ -4,12 +4,6 @@
 
 replicaCount: 1
 
-image:
-  repository: 047401700492.dkr.ecr.ap-southeast-1.amazonaws.com
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
-
 serviceAccount:
   name: github-exporter
 
