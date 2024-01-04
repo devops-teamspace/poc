@@ -1,25 +1,10 @@
 configmap:
     app:
-        port: ENC[AES256_GCM,data:Xmlrhvw=,iv:E578Puq7RjesdSZdJfu4ciU3DAqQGZ5fPzhNngc2Zmc=,tag:cawevQ+nUgVVhIKybMuDuw==,type:str]
+        port: :9504
         app_ids:
-            - azp: ENC[AES256_GCM,data:PgnC9BLu9SCmaXUPV4i2R/DpojJdtFX9,iv:p6m4NbTWSzYT/U211e9OMkVnN9ITbbljXjMg3w3+KxM=,tag:5FXMnGbhyHp+Tw+K8baj5A==,type:str]
-              app_id: ENC[AES256_GCM,data:jsW736DYAQ==,iv:kq08gB5jPJ0n50PMR3uSVdN43h+jl1QEJo0colsJCZU=,tag:GXorc5Lpul1KQ02GBxJhvA==,type:str]
-            - azp: ENC[AES256_GCM,data:MSaGRaEk+6aiSTri6aj+OQlvAsGBIix7YyI=,iv:8EBofttyOF/MJSGx7NLBYAOI62C6UdbCUy6Pf8vfjuo=,tag:b6YTtYr9lUVxW9oG1RdtgA==,type:str]
-              app_id: ENC[AES256_GCM,data:oHC4R1j+9g==,iv:kHKWF1NTtwe4s9RRvJO2iebUaGCJ7ACfO5Fxvhe+jC0=,tag:iQ80wB8h5jU/x9ETbhFisA==,type:str]
-            - azp: ENC[AES256_GCM,data:dCNWuoi9ndC1NyN29TY=,iv:vaLXb2PRKlIdz6YcORc/Zy6bKH50RxtcKcTmNC0AgCY=,tag:/LdK+9POAksn6Y6Cw06Ikg==,type:str]
-              app_id: ENC[AES256_GCM,data:cZx+8YNCYg==,iv:/gANX8jbZq69E1UKvWrz47er203tb66CCEF7XbjWQXg=,tag:MBvLi0eiLSRoi8vkrosPqg==,type:str]
-sops:
-    kms:
-        - arn: arn:aws:kms:ap-southeast-1:047401700492:key/9ccbe92b-cbb6-4830-84b1-b65cf8e01485
-          created_at: "2024-01-04T06:18:57Z"
-          enc: AQICAHjQNb6yY1+30aEoHjqiQWr+CzXTpiyHQKMz/SFo/qT0LwECUd/JYVksXwktkf/TQONdAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMrt0+hcAZBQmiz8SuAgEQgDt9/wKUiBpG3NpcgtqKnxxY4pc7may3n5Y5y9weAlG+ncBhUOJ+jatlMUt8JHuOttPL5c+qB75Cj6kWhg==
-          aws_profile: ""
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-01-04T06:18:58Z"
-    mac: ENC[AES256_GCM,data:xkuG2sc2OWtWH4xn4vsJgFVYFGQVqMoXYnaHXB6bBR9wLgVmfGtDN+k4RsRDs4BTWPC44QjiIHWMs/bA0VFamEThCJ/df226FuSOzsRZLYbE6y/zNGuQnOBwG53xGTJr3Z1Z8TFxwZrV51wfZlnKGr+A9PTv+/GLlNK4FNp11kw=,iv:fnKwirkf0TwLsNZQcx2QwSkAgCulp7PlQD7yo4nOj80=,tag:I9N3OFkN1AJ95C5dohVVZw==,type:str]
-    pgp: []
-    unencrypted_suffix: _unencrypted
-    version: 3.8.0
+            - azp: 64ed513ceec70e190e695c60
+              app_id: TP-FIVE
+            - azp: 6hukjqp2erfpq8bos8p21jbshc
+              app_id: TP-FIVE
+            - azp: tp-five-apollo
+              app_id: TP-FIVE
