@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ .Release.Name }}-vs
+  name: {{ .Release.Name"-vs" }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "github-exporter.labels" . | nindent 4 }}
