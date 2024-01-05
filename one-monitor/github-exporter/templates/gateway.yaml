@@ -3,15 +3,15 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name:
-    "{ .Release.Name  }": -gw
+    {{ .Release.Name  }}-gw
   namespace:
-    "{ .Release.Namespace }": null
+    {{ .Release.Namespace }}
 spec:
   selector:
     istio: gateway
   servers:
     - hosts:
-        - "{ .Values.host }": null
+        - {{ .Values.host }}
       port:
         name: http
         number: 80
