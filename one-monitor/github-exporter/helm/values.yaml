@@ -108,7 +108,7 @@ affinity: {}
 tolerations: []
 serviceMonitor:
     # -- Enable service monitor integration
-    enabled: true
+    enabled: false
     # -- Namespace used by service monitor
     namespace: "monitor"
     # -- Additional labels for the service monitor
