@@ -56,7 +56,7 @@ ingress:
     className: alb
     # -- Host definition for ingress
     hosts:
-        - host: github-exporter.dev.xrspace.io
+        - host: github-exporter.monitor.svc.cluster.local
           paths:
             - path: /
               pathType: Prefix
@@ -110,7 +110,7 @@ serviceMonitor:
     # -- Enable service monitor integration
     enabled: true
     # -- Namespace used by service monitor
-    namespace: ""
+    namespace: "monitor"
     # -- Additional labels for the service monitor
     labels: {}
     # -- Scrape interval
