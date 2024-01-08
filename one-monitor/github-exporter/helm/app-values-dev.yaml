@@ -8,3 +8,7 @@ configmap:
               app_id: TP-FIVE
             - azp: tp-five-apollo
               app_id: TP-FIVE
+webhook:
+    secret: NPh2x7CwvB2ZW_C
+config:
+    token: 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

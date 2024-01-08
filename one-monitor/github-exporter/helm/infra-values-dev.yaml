@@ -11,6 +11,9 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1024
 
+serviceAccount:
+  name: github-exporter
+
 service:
   type: ClusterIP
   port: 80

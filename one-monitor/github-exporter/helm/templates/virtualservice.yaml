@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ .Release.Name }}-vs
+  name: "{{ .Release.Name }}-vs"
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "github-exporter.labels" . | nindent 4 }}
@@ -15,7 +15,7 @@ spec:
         - destination:
             host: {{ .Release.Name }}-svc
             port:
-              number: {{ .Values.configmap.app.port | trimPrefix ":"  }}
+              number: {{ .Values.service.port }}
       corsPolicy:
         allowCredentials: true
         allowHeaders:
