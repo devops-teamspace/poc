@@ -110,9 +110,10 @@ serviceMonitor:
     # -- Enable service monitor integration
     enabled: true
     # -- Namespace used by service monitor
-    namespace: "monitor"
+    namespace: "monitoring"
     # -- Additional labels for the service monitor
-    labels: {}
+    labels: 
+      release: prometheus
     # -- Scrape interval
     interval: 30s
     # -- Scrape path

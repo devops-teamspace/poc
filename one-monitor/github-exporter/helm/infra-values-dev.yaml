@@ -33,5 +33,5 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-host: github-exporter.monitor.svc.cluster.local
+host: github-exporter.monitoring.svc.cluster.local
 cmsHost: https://cms.dev.xrspace.io

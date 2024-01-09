@@ -2,10 +2,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: github-exporter
-  namespace: default
+  namespace: monitoring
 spec:
   destination:
-    namespace: monitor
+    namespace: monitoring
     server: https://kubernetes.default.svc
   project: one-app
   source:
@@ -14,7 +14,7 @@ spec:
       - values.yaml
       - infra-values-dev.yaml
       - secrets:app-values-dev.yam
-    path: one-monitor/github-exporter
+    path: one-monitor/github-exporter/helm
     repoURL: 'https://github.com/XRSPACE-Inc/tp-five'
     targetRevision: pre-release
   syncPolicy:
