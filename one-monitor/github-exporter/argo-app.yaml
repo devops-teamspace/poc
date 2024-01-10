@@ -11,9 +11,7 @@ spec:
   source:
     helm:
       valueFiles:
-      - values.yaml
-      - infra-values-dev.yaml
-      - secrets:app-values-dev.yam
+      - secrets:values.yaml
     path: one-monitor/github-exporter/helm
     repoURL: 'https://github.com/XRSPACE-Inc/tp-five'
     targetRevision: pre-release
