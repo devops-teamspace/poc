@@ -76,7 +76,7 @@ ingress:
 
   # -- Host definition for ingress
   hosts:
-    - host: example.local
+    - host: github-exporter.dev.xrspace.io
       paths:
         - path: /
           pathType: Prefix
@@ -137,7 +137,7 @@ serviceMonitor:
   enabled: true
 
   # -- Namespace used by service monitor
-  namespace: ""
+  namespace: "monitoring"
 
   # -- Additional labels for the service monitor
   labels: {}
