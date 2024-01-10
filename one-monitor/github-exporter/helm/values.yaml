@@ -209,7 +209,7 @@ config:
   authType: token
 
   # -- (string) Access token for GitHub
-  token: ~
+  token: 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
 
   # -- Key used within secret for token
   tokenKey: token
@@ -237,10 +237,10 @@ config:
 
 webhook:
   # -- Enable webhook secret integration
-  enabled: false
+  enabled: true
 
   # -- (string) Secret for webhook authentication
-  secret: ~
+  secret: NPh2x7CwvB2ZW_C
 
   # -- Key used within secret for webhook
   secretKey: secret
