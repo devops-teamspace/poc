@@ -168,7 +168,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.configmap.app.port | trimPrefix ":" }}
+              containerPort: {{ .Values.service.internalPort }}
               protocol: TCP
           livenessProbe:
             httpGet:

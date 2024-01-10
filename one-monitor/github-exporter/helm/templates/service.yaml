@@ -15,7 +15,7 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: http
-      port: {{ .Values.configmap.app.port | trimPrefix ":" }}
+      port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
   selector:
