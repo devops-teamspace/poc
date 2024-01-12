@@ -66,15 +66,15 @@ service:
 
   # -- Additional labels for the service
   labels: {}
-
 ingress:
   # -- Enable ingress
   enabled: false
 
   # -- (string) Class name for the ingress resource
-  className:
+  className: null
 
   # -- Host definition for ingress
+  cmsHost: https://cms.dev.xrspace.io
   hosts:
     - host: github-exporter.dev.xrspace.io
       paths:
