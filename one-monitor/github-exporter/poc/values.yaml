@@ -134,7 +134,7 @@ tolerations: []
 
 serviceMonitor:
   # -- Enable service monitor integration
-  enabled: false
+  enabled: true
 
   # -- Namespace used by service monitor
   namespace: ""
@@ -237,7 +237,7 @@ config:
 
 webhook:
   # -- Enable webhook secret integration
-  enabled: true
+  enabled: false
 
   # -- (string) Secret for webhook authentication
   secret: NPh2x7CwvB2ZW_C
@@ -269,10 +269,11 @@ exporter:
   enterprises: ~
 
   # -- (string) Organizations to scrape metrics from
-  orgs: ~
+  orgs: devops-teamspace
 
   # -- (string) Repositories to scrape metrics from
-  repos: ~
+  repos: [ "devops-teamspace/poc","devops-teamspace/oci","devops-teamspace/starter-workflows" ]
+# repos: ~
 
 collector:
   # -- Enable collector for admin
