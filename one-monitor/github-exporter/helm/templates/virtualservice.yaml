@@ -18,20 +18,3 @@ spec:
             host: {{ .Release.Name }}-svc
             port:
               number: {{ .Values.service.port }}
-      corsPolicy:
-        allowCredentials: true
-        allowHeaders:
-          - authorization
-          - content-type
-        allowMethods:
-          - POST
-          - GET
-          - PUT
-          - DELETE
-          - PATCH
-          - OPTIONS
-        allowOrigins:
-          - exact: {{ .Values.ingress.cmsHost }}
-        exposeHeaders:
-          - content-length
-        maxAge: 24h
