@@ -270,9 +270,11 @@ exporter:
 
   # -- (string) Organizations to scrape metrics from
   orgs: devops-teamspace
+# orgs: XRSPACE-Inc
 
   # -- (string) Repositories to scrape metrics from
   repos: [ "devops-teamspace/poc","devops-teamspace/oci","devops-teamspace/starter-workflows" ]
+# repos: [ "XRSPACE-Inc/tp-five" ]
 # repos: ~
 
 collector:
