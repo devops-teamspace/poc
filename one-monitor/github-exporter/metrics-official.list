@@ -1,0 +1,92 @@
+github_action_billing_included_minutes{type, name}
+github_action_billing_minutes_used{type, name}
+github_action_billing_minutes_used_breakdown{type, name, os}
+github_action_billing_paid_minutes{type, name}
+github_admin_comments_commit{}
+github_admin_comments_gist{}
+github_admin_comments_issue{}
+github_admin_comments_pull_request{}
+github_admin_gists_private{}
+github_admin_gists_public{}
+github_admin_gists_total{}
+github_admin_hooks_active{}
+github_admin_hooks_inactive{}
+github_admin_hooks_total{}
+github_admin_issues_closed{}
+github_admin_issues_open{}
+github_admin_issues_total{}
+github_admin_milestones_closed{}
+github_admin_milestones_open{}
+github_admin_milestones_total{}
+github_admin_orgs_disabled{}
+github_admin_orgs_members{}
+github_admin_orgs_teams{}
+github_admin_orgs_total{}
+github_admin_pages_total{}
+github_admin_pulls_mergeable{}
+github_admin_pulls_merged{}
+github_admin_pulls_total{}
+github_admin_pulls_unmergeable{}
+github_admin_repos_fork{}
+github_admin_repos_org{}
+github_admin_repos_pushes_total{}
+github_admin_repos_root{}
+github_admin_repos_total{}
+github_admin_repos_wikis_total{}
+github_admin_users_admin{}
+github_admin_users_suspended{}
+github_admin_users_total{}
+github_org_collaborators{name}
+github_org_create_timestamp{name}
+github_org_disk_usage{name}
+github_org_filled_seats{name}
+github_org_followers{name}
+github_org_following{name}
+github_org_private_gists{name}
+github_org_private_repos_owned{name}
+github_org_private_repos_total{name}
+github_org_public_gists{name}
+github_org_public_repos{name}
+github_org_seats{name}
+github_org_updated_timestamp{name}
+github_package_billing_gigabytes_bandwidth_used{type, name}
+github_package_billing_included_gigabytes_bandwidth{type, name}
+github_package_billing_paid_gigabytes_bandwidth_used{type, name}
+github_repo_allow_merge_commit{owner, name}
+github_repo_allow_rebase_merge{owner, name}
+github_repo_allow_squash_merge{owner, name}
+github_repo_archived{owner, name}
+github_repo_created_timestamp{owner, name}
+github_repo_forked{owner, name}
+github_repo_forks{owner, name}
+github_repo_has_downloads{owner, name}
+github_repo_has_issues{owner, name}
+github_repo_has_pages{owner, name}
+github_repo_has_projects{owner, name}
+github_repo_has_wiki{owner, name}
+github_repo_issues{owner, name}
+github_repo_network{owner, name}
+github_repo_private{owner, name}
+github_repo_pushed_timestamp{owner, name}
+github_repo_size{owner, name}
+github_repo_stargazers{owner, name}
+github_repo_subscribers{owner, name}
+github_repo_updated_timestamp{owner, name}
+github_repo_watchers{owner, name}
+github_request_duration_seconds{collector}
+github_request_failures_total{collector}
+github_runner_enterprise_busy{owner, id, name, os, status}
+github_runner_enterprise_online{owner, id, name, os, status}
+github_runner_org_busy{owner, id, name, os, status}
+github_runner_org_online{owner, id, name, os, status}
+github_runner_repo_busy{owner, id, name, os, status}
+github_runner_repo_online{owner, id, name, os, status}
+github_storage_billing_days_left_in_cycle{type, name}
+github_storage_billing_estimated_paid_storage_for_month{type, name}
+github_storage_billing_estimated_storage_for_month{type, name}
+github_workflow_created_timestamp{owner, repo, workflow, event, name, status, branch, number, run}
+github_workflow_duration_ms{owner, repo, workflow, event, name, status, branch, number, run}
+github_workflow_duration_run_created_minutes{owner, repo, workflow, event, name, status, branch, number, run}
+github_workflow_started_timestamp{owner, repo, workflow, event, name, status, branch, number, run}
+github_workflow_status{owner, repo, workflow, event, name, status, branch, number, run}
+github_workflow_updated_timestamp{owner, repo, workflow, event, name, status, branch, number, run}

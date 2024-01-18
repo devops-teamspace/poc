@@ -134,7 +134,7 @@ tolerations: []
 
 serviceMonitor:
   # -- Enable service monitor integration
-  enabled: false
+  enabled: true
 
   # -- Namespace used by service monitor
   namespace: ""
