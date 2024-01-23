@@ -15,6 +15,6 @@ spec:
   http:
     - route:
         - destination:
-            host: {{ template "github-exporter.fullname" . }}{{ .Release.Namespace }}.svc.cluster.local
+            host: {{ template "github-exporter.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
             port:
               number: {{ .Values.service.port }}
