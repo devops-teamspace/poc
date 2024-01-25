@@ -25,13 +25,13 @@ jobs:
       env:
         USERNAME: "${{ secrets.USERNAME }}"
         GITHUB_TOKEN_REGISTRY: "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
-        CHARTS_REPO: "oci://ghcr.io/devops-teamspace/${{ github.event.inputs.target_scale_set }}"
+        CHARTS_REPO: "oci://ghcr.io/devops-teamspace/guestbook"
         VERSION: ${{ github.ref_name }}
         HELM_EXPERIMENTAL_OCI: '1'
       run: |
         CHART_VERSION=$(echo $VERSION | cut -c 2-)
         echo $GITHUB_TOKEN_REGISTRY | helm registry login ghcr.io/devops-teamspace --username $USERNAME --password-stdin
-        helm install "${{ github.event.inputs.target_scale_set }}" \
-        --namespace "${{ github.event.inputs.runner_namespace }}" \
+        helm install "guestbook" \
+        --namespace "test" \
         --create-namespace $CHARTS_REPO --version 0.1.0
         k3d cluster delete test-cluster-1
