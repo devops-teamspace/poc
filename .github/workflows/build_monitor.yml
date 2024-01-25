@@ -13,7 +13,7 @@ env:
   ECR_REPOSITORY: tp-five/one-monitor/github-exporter-poc
 
 jobs:
-  package_helm_chart:
+  Deploy:
     name: Package github-exporter OCI
     runs-on: ["self-hosted"]
 
