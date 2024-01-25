@@ -1,0 +1,37 @@
+name: Deployment main branch to K3D
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  Deploy:
+    runs-on: [self-hosted, Linux, X64] # use the GitHub hosted runners to deploy the self-hosted runners in GHEC
+    # If using GHES or GHAE, use another deployment, such as having CentOS redeploy Ubuntu and vice versa
+
+    steps:
+    - name: "Create Sinle Cluster"
+      uses: AbsaOSS/k3d-action@v2.4.0
+      with:
+        cluster-name: "test-cluster-1"
+        args: >-
+          --agents 1
+          --image docker.io/rancher/k3s:v1.28.6-rc2-k3s1-amd64
+    - name: Publish chart
+      env:
+        USERNAME: "${{ secrets.USERNAME }}"
+        GITHUB_TOKEN_REGISTRY: "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
+        CHARTS_REPO: "oci://ghcr.io/devops-teamspace/guestbook"
+        VERSION: ${{ github.ref_name }}
+        HELM_EXPERIMENTAL_OCI: '1'
+      run: |
+        CHART_VERSION=$(echo $VERSION | cut -c 2-)
+        echo $GITHUB_TOKEN_REGISTRY | helm registry login ghcr.io/devops-teamspace --username $USERNAME --password-stdin
+        helm install "guestbook" \
+        --namespace "test" \
+        --create-namespace $CHARTS_REPO --version 0.1.0
+        k3d cluster delete test-cluster-1
