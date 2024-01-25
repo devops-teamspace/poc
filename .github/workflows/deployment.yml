@@ -12,7 +12,6 @@ jobs:
   Deploy:
     runs-on: [self-hosted, Linux, X64] # use the GitHub hosted runners to deploy the self-hosted runners in GHEC
     # If using GHES or GHAE, use another deployment, such as having CentOS redeploy Ubuntu and vice versa
-    environment: ghcr
 
     steps:
     - name: "Create Sinle Cluster"
