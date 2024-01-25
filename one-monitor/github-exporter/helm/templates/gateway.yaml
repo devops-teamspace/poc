@@ -1,0 +1,20 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name:
+   "{{ .Release.Name  }}-gw"
+  namespace:
+    {{ .Release.Namespace }}
+spec:
+  selector:
+    istio: gateway
+  servers:
+    - hosts:
+        {{- range .Values.ingress.hosts  }}
+          - {{ .host }}
+        {{- end }}
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
