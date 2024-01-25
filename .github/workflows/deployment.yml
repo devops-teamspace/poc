@@ -1,3 +1,4 @@
+name: Deployment main branch
 on:
   push:
     branches:
