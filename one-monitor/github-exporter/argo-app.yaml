@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: github-exporter
+  namespace: monitoring
+spec:
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  project: one-app
+  source:
+    helm:
+      valueFiles:
+      - secrets:values.yaml
+    path: one-monitor/github-exporter/helm
+    repoURL: 'https://github.com/XRSPACE-Inc/tp-five'
+    targetRevision: pre-release
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
