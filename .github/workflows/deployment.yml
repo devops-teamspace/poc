@@ -12,12 +12,10 @@ jobs:
   Deploy:
     runs-on: [self-hosted, Linux, X64] # use the GitHub hosted runners to deploy the self-hosted runners in GHEC
     # If using GHES or GHAE, use another deployment, such as having CentOS redeploy Ubuntu and vice versa
-    environment: ${{ github.event.inputs.environment_name }}
+    environment: ghcr
 
     steps:
     - name: "Create Sinle Cluster"
-      env:
-        SUDO_ASKPASS: "~/pass"
       uses: AbsaOSS/k3d-action@v2.4.0
       with:
         cluster-name: "test-cluster-1"
