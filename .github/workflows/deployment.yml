@@ -1,4 +1,4 @@
-name: Deployment main branch
+name: Deployment main branch to K3D
 on:
   push:
     branches:
