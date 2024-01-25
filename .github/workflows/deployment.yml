@@ -9,35 +9,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  package_helm_chart:
-    name: Package github-exporter OCI
-    runs-on: ["self-hosted"]
+  Deploy:
+    runs-on: [self-hosted, Linux, X64] # use the GitHub hosted runners to deploy the self-hosted runners in GHEC
+    # If using GHES or GHAE, use another deployment, such as having CentOS redeploy Ubuntu and vice versa
+    environment: ${{ github.event.inputs.environment_name }}
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ inputs.TARGET_BRANCH || '' }}
-
-      # Setup
-      # ==================================================
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2.2.0
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-1
-      - uses: ./one-utility/actions/ecr_image_tag
-        id: ecr_image_tag
-        with:
-          ecr_repository: ${{ env.ECR_REPOSITORY }}
-      - name: Preparing helm-charts for OCI
-        if: ${{ steps.ecr_image_tag.outputs.already_exists == 'false' }}
-        env:
-          IMAGE_TAG: ${{ steps.ecr_image_tag.outputs.image_tag }}
-          ECR_REGISTRY: ${{ steps.ecr_image_tag.outputs.ecr_registry }}
-        run: |
-          pushd one-monitor || exit 1
-          helm package github-exporter/helm
-          echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" > ecr_tag.txt
-          helm push github-exporter-4.1.0.tgz oci://511635964514.dkr.ecr.ap-southeast-1.amazonaws.com/
-          popd
+    - name: "Create Sinle Cluster"
+      env:
+        SUDO_ASKPASS: "~/pass"
+      uses: AbsaOSS/k3d-action@v2.4.0
+      with:
+        cluster-name: "test-cluster-1"
+        args: >-
+          --agents 1
+          --image docker.io/rancher/k3s:v1.28.6-rc2-k3s1-amd64
+    - name: Publish chart
+      env:
+        USERNAME: "${{ secrets.USERNAME }}"
+        GITHUB_TOKEN_REGISTRY: "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
+        CHARTS_REPO: "oci://ghcr.io/devops-teamspace/${{ github.event.inputs.target_scale_set }}"
+        VERSION: ${{ github.ref_name }}
+        HELM_EXPERIMENTAL_OCI: '1'
+      run: |
+        CHART_VERSION=$(echo $VERSION | cut -c 2-)
+        echo $GITHUB_TOKEN_REGISTRY | helm registry login ghcr.io/devops-teamspace --username $USERNAME --password-stdin
+        helm install "${{ github.event.inputs.target_scale_set }}" \
+        --namespace "${{ github.event.inputs.runner_namespace }}" \
+        --create-namespace $CHARTS_REPO --version 0.1.0
+        k3d cluster delete test-cluster-1
