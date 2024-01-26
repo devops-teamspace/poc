@@ -35,4 +35,4 @@ jobs:
         helm install "guestbook" \
         --namespace "test" \
         --create-namespace $CHARTS_REPO --version 0.1.0
-        k3d cluster delete test-cluster-1
+#       k3d cluster delete test-cluster-1
