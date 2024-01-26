@@ -1,0 +1,67 @@
+name: Deploy to k3d
+
+on:
+  workflow_call:
+    inputs:
+      TARGET_BRANCH:
+        description: "The target branch"
+        default: ""
+        type: string
+  workflow_dispatch: # deploy on demand
+    inputs:
+      target_scale_set:  # name our runner set
+        # In this repository, this corresponds to the helm chart name in `/deployments/helm-***.yml`.
+        # e.g., `ubi8` would target `/deployments/helm-ubi8.yml`
+        description: "Which scale set to deploy?"
+        default: "guestbook"
+        type: choice
+        required: true
+        options:  # change these to your own names or change :point_up: to a `string` for freeform entry.
+        - "guestbook"
+        - "grafana"
+        - "argo-cd" 
+        - "kube-prometheus" 
+      environment_name:  # this corresponds to the environments we set up for our `kubeconfig` files
+        description: "Which environment to deploy to?"
+        type: choice  # drop-down menus are fantastic!
+        required: true
+        options:  # change these to your own names or change :point_up: to a `string` for freeform entry.
+        - "ghcr"
+        - "awsecr"
+        - "production" 
+        default: "ghcr"
+      runner_namespace:
+        description: "Which namespace to deploy to?"
+        type: choice
+        required: true
+        options:  # again, change this to your own namespaces
+        - "runners"
+        - "test"
+        default: "test"
+
+jobs:
+  Deploy:
+    runs-on: [self-hosted, Linux, X64] # use the GitHub hosted runners to deploy the self-hosted runners in GHEC
+    # If using GHES or GHAE, use another deployment, such as having CentOS redeploy Ubuntu and vice versa
+    environment: ${{ github.event.inputs.environment_name }}
+
+    steps:
+    - name: "Create Sinle Cluster"
+      uses: AbsaOSS/k3d-action@v2
+      with:
+        cluster-name: "test-cluster-1"
+        args: --agents 1
+    - name: Publish chart
+      env:
+        USERNAME: "${{ secrets.USERNAME }}"
+        GITHUB_TOKEN_REGISTRY: "${{ secrets.REGISTRY_ACCESS_TOKEN }}"
+        CHARTS_REPO: "oci://ghcr.io/devops-teamspace/${{ github.event.inputs.target_scale_set }}"
+        VERSION: ${{ github.ref_name }}
+        HELM_EXPERIMENTAL_OCI: '1'
+      run: |
+        CHART_VERSION=$(echo $VERSION | cut -c 2-)
+        echo $GITHUB_TOKEN_REGISTRY | helm registry login ghcr.io/devops-teamspace --username $USERNAME --password-stdin
+        helm install "${{ github.event.inputs.target_scale_set }}" \
+        --namespace "${{ github.event.inputs.runner_namespace }}" \
+        --create-namespace $CHARTS_REPO --version 0.1.0
+        k3d cluster delete test-cluster-1
