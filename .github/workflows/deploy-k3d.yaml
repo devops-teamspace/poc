@@ -26,6 +26,7 @@ on:
         type: choice  # drop-down menus are fantastic!
         required: true
         options:  # change these to your own names or change :point_up: to a `string` for freeform entry.
+        - "production"
         - "ghcr"
         - "awsecr"
         - "production" 
